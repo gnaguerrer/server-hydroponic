@@ -24,33 +24,33 @@ Humedad_Planta_2 = 'Humedad_Planta_2'
 
 # Thresholds for selected vars
 THRESHOLD_TEMPERATURE_BACKUP_TANK = {
+    'min': 18,
     'max': 27,
-    'min': 18
 }
 
 THRESHOLD_TEMPERATURE_MAIN_TANK = {
+    'min': 18,
     'max': 27,
-    'min': 18
 }
 
 THRESHOLD_HUMIDITY_1 = {
+    'min': 50,
     'max': 70,
-    'min': 50
 }
 
 THRESHOLD_HUMIDITY_2 = {
+    'min': 50,
     'max': 70,
-    'min': 50
 }
 
 THRESHOLD_TEMPERATURE_DOME_DAY = {
+    'min': 20,
     'max': 25,
-    'min': 20
 }
 
 THRESHOLD_TEMPERATURE_DOME_NIGHT = {
+    'min': 15,
     'max': 20,
-    'min': 15
 }
 
 
@@ -92,3 +92,15 @@ VARS_DOME = {
 
 
 TIME_ZONE = "America/Bogota"
+
+
+ALERT_MESSAGES = {
+    'COUNT_MIN_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'The minium temperature of main tank has been reached three times.',
+    'COUNT_MIN_{}'.format(TEMPERATURE_TANK_KEY): 'The minium temperature of backup tank has been reached three times.',
+    'COUNT_MIN_{}'.format(HUMEDITY_1_KEY): 'The minium temperature of humedty 1 has been reached three times.',
+    'COUNT_MIN_{}'.format(HUMEDITY_2_KEY): 'The minium temperature of humedty 2 has been reached three times.',
+    'COUNT_MAX_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'The maximun temperature of main tank has been reached three times.',
+    'COUNT_MAX_{}'.format(TEMPERATURE_TANK_KEY): 'The maximun temperature of backup tank has been reached three times.',
+    'COUNT_MAX_{}'.format(HUMEDITY_1_KEY): 'The maximun temperature of humedty 1 has been reached three times.',
+    'COUNT_MAX_{}'.format(HUMEDITY_2_KEY): 'The maximun temperature of humedty 2 has been reached three times.',
+}

@@ -29,16 +29,56 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
+      "id": 88,
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "description": "",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 8,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "# IoT Final Project - Hydroponic crop\n\n> Source code: https://github.com/gnaguerrer/server-hydroponic\n\n```\ngit clone https://github.com/gnaguerrer/server-hydroponic\ncd server-hydroponic\ndocker compose build\ndocker compose up -d\n```",
+            "mode": "markdown"
+          },
+          "pluginVersion": "9.3.6",
+          "title": "Project Info",
+          "type": "text"
+        }
+      ],
+      "title": "Información",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
       "id": 63,
       "panels": [],
-      "title": "Information",
+      "title": "Configuración de alertas",
       "type": "row"
     },
     {
@@ -48,2196 +88,2149 @@
       },
       "description": "",
       "gridPos": {
-        "h": 6,
-        "w": 24,
+        "h": 3,
+        "w": 14,
         "x": 0,
-        "y": 1
+        "y": 2
       },
-      "id": 8,
+      "id": 86,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# IoT Final Project - Hydroponic crop\n\n> Source code: https://github.com/gnaguerrer/server-hydroponic\n\n```\ngit clone https://github.com/gnaguerrer/server-hydroponic\ncd server-hydroponic\ndocker compose build\ndocker compose up -d\n```",
+        "content": "Las alertas SMS se envian si se supera cualquier umbral más de tres veces.",
         "mode": "markdown"
       },
       "pluginVersion": "9.3.6",
-      "title": "Project Info",
+      "title": "Alertas SMS",
       "type": "text"
     },
     {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 7
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
       },
-      "id": 51,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 2
-          },
-          "id": 65,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Backup Tank\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "On"
+                }
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Off"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
               }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 4
-          },
-          "id": 37,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
+            ]
+          }
         },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "alert_value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bool_on_off"
+              },
+              {
+                "id": "displayName",
+                "value": "Alertas"
+              },
+              {
+                "id": "mappings",
+                "value": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Off"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "On"
+                      }
+                    },
+                    "type": "value"
                   }
                 ]
               },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 11,
-            "y": 4
-          },
-          "id": 36,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_TEM_TANK\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 14,
-            "y": 4
-          },
-          "id": 35,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_TEM_TANK\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-YlRd"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 0,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "max": 45,
-              "min": 15,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "light-blue",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 4
-          },
-          "id": 61,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Tanque_de_reserva\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Temperature (°C)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
+              {
+                "id": "displayName",
+                "value": "Estado"
               }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 7
-          },
-          "id": 38,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 14,
+        "y": 2
+      },
+      "id": 84,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 10
-          },
-          "id": 66,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Main Tank\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 12
-          },
-          "id": 45,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 11,
-            "y": 12
-          },
-          "id": 47,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_TEMP_MAIN_TANK\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 14,
-            "y": 12
-          },
-          "id": 48,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_TEMP_MAIN_TANK\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-YlRd"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 1,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "max": 43,
-              "min": 15,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "semi-dark-blue",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 12
-          },
-          "id": 49,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Tanque_Principal\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Temperature (ºC)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 15
-          },
-          "id": 46,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alert\")\n  |> filter(fn: (r) => r[\"_field\"] == \"alert_value\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "A"
         }
       ],
-      "title": "Tanks",
-      "type": "row"
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 82,
+      "options": {
+        "contentType": "application/json",
+        "icon": "bell",
+        "isAuth": false,
+        "method": "GET",
+        "orientation": "center",
+        "text": "Habilitar/Deshabilitar alertas",
+        "type": "header",
+        "url": "http://localhost:8000/toogle_alerts",
+        "variant": "destructive"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "cloudspout-button-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 14,
+        "x": 0,
+        "y": 5
+      },
+      "id": 100,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.3.6",
+      "title": "Predicción de temperatura promedio del dia siguiente",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "id": 101,
+      "options": {
+        "contentType": "application/json",
+        "icon": "chart-line",
+        "isAuth": false,
+        "method": "GET",
+        "orientation": "center",
+        "text": "Predecir temperatura promedio",
+        "type": "header",
+        "url": "http://localhost:8000/get_prediction",
+        "variant": "primary"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "cloudspout-button-panel"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 8
       },
-      "id": 44,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 8,
-            "x": 0,
-            "y": 27
-          },
-          "id": 15,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 8,
-            "x": 8,
-            "y": 27
-          },
-          "id": 10,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-YlRd"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 1,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "max": 43,
-              "min": 15,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "super-light-yellow"
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 8,
-            "x": 16,
-            "y": 27
-          },
-          "id": 56,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Domo\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Temperature (°C)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 8,
-            "x": 0,
-            "y": 30
-          },
-          "id": 67,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Day\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 8,
-            "x": 8,
-            "y": 30
-          },
-          "id": 68,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Night\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 0,
-            "y": 32
-          },
-          "id": 18,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_DAY_TEMP_DOME\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 4,
-            "y": 32
-          },
-          "id": 17,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_DAY_TEMP_DOME\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 8,
-            "y": 32
-          },
-          "id": 69,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_NIGHT_TEMP_DOME\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 12,
-            "y": 32
-          },
-          "id": 70,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_NIGHT_TEMP_DOME\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        }
-      ],
-      "title": "Dome ",
+      "id": 51,
+      "panels": [],
+      "title": "Tanques",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura_Tanque_Principal"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque principal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura_Tanque_de_reserva"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque de reserva"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 10,
+        "w": 10,
         "x": 0,
         "y": 9
       },
-      "id": 42,
-      "panels": [
+      "id": 78,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
         {
           "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
           },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 4
-          },
-          "id": 71,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Plants\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Tanque_Principal\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "Main"
         },
         {
           "datasource": {
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 17,
-            "x": 0,
-            "y": 6
-          },
-          "id": 31,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_PLANTS\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-YlRd"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 1,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "max": 43,
-              "min": 15,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "super-light-yellow",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 6
-          },
-          "id": 39,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Plantas\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Temperature (°C)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 17,
-            "x": 0,
-            "y": 9
-          },
-          "id": 32,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_PLANTS\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 12
-          },
-          "id": 72,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### ATM\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 17,
-            "x": 0,
-            "y": 14
-          },
-          "id": 26,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_ATM\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-YlRd"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 1,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "max": 43,
-              "min": 15,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "super-light-yellow",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 14
-          },
-          "id": 30,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_medio_ambiente\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Temperature (°C)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 17,
-            "x": 0,
-            "y": 17
-          },
-          "id": 27,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_ATM\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Tanque_de_reserva\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "BackUp"
         }
       ],
-      "title": "Plants - ATM",
-      "type": "row"
+      "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_TEMP_MAIN_TANK counts_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque principal"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_TEM_TANK counts_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque de reserva"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 10,
+        "y": 9
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Main"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "BackUp"
+        }
+      ],
+      "title": "Veces por debajo del límite inf.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "orange",
+                "value": 28
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_TEM_TANK value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque de reserva"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_TEMP_MAIN_TANK value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque principal"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 37,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |>  range(start: -24h)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Main"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "BackUp"
+        }
+      ],
+      "title": "Temperatura mínima",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_TEMP_MAIN_TANK counts_max"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque principal"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_TEM_TANK counts_max"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque de reserva"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 10,
+        "y": 14
+      },
+      "id": 79,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Main"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "BackUp"
+        }
+      ],
+      "title": "Veces por encima del límite sup.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "orange",
+                "value": 28
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_TEM_TANK value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque de reserva"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_TEMP_MAIN_TANK value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tanque principal"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "id": 99,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |>  range(start: -24h)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_MAIN_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Main"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEM_TANK\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "BackUp"
+        }
+      ],
+      "title": "Temperatura máxima",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 19
       },
-      "id": 14,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
+      "id": 44,
+      "panels": [],
+      "title": "Domo",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
           },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 5
-          },
-          "id": 73,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "content": "### Humidity 1\n\nInformation\n",
-            "mode": "markdown"
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
               }
-            },
-            "overrides": []
+            ]
           },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 7
-          },
-          "id": 52,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
+          "unit": "celsius"
         },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura_Domo"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 11,
-            "y": 7
-          },
-          "id": 54,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_HUM_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 14,
-            "y": 7
-          },
-          "id": 55,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_HUM_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-BlPu"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 1,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "light-purple",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "humidity"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 7
-          },
-          "id": 40,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Humedad_Planta_1\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Humidity (%H)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Temperatura del domo"
               }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 10
-          },
-          "id": 53,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 20
+      },
+      "id": 91,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 13
-          },
-          "id": 74,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "### Humidity 2\n\nInformation\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "9.3.6",
-          "type": "text"
-        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 15
-          },
-          "id": 57,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Min Temperature",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 11,
-            "y": 15
-          },
-          "id": 59,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_HUM_2\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Min Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 3,
-            "x": 14,
-            "y": 15
-          },
-          "id": 60,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_HUM_2\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Count Max Temperature",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-BlPu"
-              },
-              "custom": {
-                "neutral": -3
-              },
-              "decimals": 0,
-              "displayName": "every 10 min",
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "light-blue",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "humidity"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 7,
-            "x": 17,
-            "y": 15
-          },
-          "id": 2,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "limit": 2,
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": false,
-            "text": {}
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Humedad_Planta_2\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Humidity (%H)",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 11,
-            "x": 0,
-            "y": 18
-          },
-          "id": 58,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "P5697886F9CA74929"
-              },
-              "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Max Temperature",
-          "type": "table"
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Domo\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "Dome"
         }
       ],
-      "title": "Humidity",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "orange",
+                "value": 28
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Mínima"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Máximo"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 14,
+        "x": 10,
+        "y": 20
+      },
+      "id": 90,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Min"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Max"
+        }
+      ],
+      "title": "Temperatura mínima y máxima",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_DAY_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Día"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_NIGHT_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Noche"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 10,
+        "y": 26
+      },
+      "id": 92,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 40
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_DAY_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "day"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_NIGHT_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "night"
+        }
+      ],
+      "title": "Veces por debajo del límite inf.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_DAY_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Día"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_NIGHT_TEMP_DOME"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Noche"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 17,
+        "y": 26
+      },
+      "id": 93,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 40
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_DAY_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "day"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_NIGHT_TEMP_DOME\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "night"
+        }
+      ],
+      "title": "Veces por encima del límite sup.",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 42,
+      "panels": [],
+      "title": "Plantas y medio ambiente",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "displayName": "every 10 min",
+          "links": [],
+          "mappings": [],
+          "max": 43,
+          "min": 15,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura_Plantas"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Plantas"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura_medio_ambiente"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Medio ambiente"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 31
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_Plantas\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "Plants"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Temperatura_medio_ambiente\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "ATM"
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_TEMP_PLANTS"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Plantas"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_TEMP_ATM"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Medio ambiente"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 14,
+        "x": 10,
+        "y": 31
+      },
+      "id": 97,
+      "options": {
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_PLANTS\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Plant"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_TEMP_ATM\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "ATM"
+        }
+      ],
+      "title": "Temperatura mínima",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_TEMP_PLANTS value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Plantas"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_TEMP_ATM value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Medio ambiente"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 14,
+        "x": 10,
+        "y": 36
+      },
+      "id": 98,
+      "options": {
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_PLANTS\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Plant"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_TEMP_ATM\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "ATM"
+        }
+      ],
+      "title": "Temperatura máxima",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Humedad",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Humedad_Planta_1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 1"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Humedad_Planta_2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 2"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 42
+      },
+      "id": 94,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Humedad_Planta_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "1"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Humedad_Planta_2\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "2"
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_HUM_1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 1"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MIN_HUM_2 counts_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 2"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 10,
+        "y": 42
+      },
+      "id": 95,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum1"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_min\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MIN_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum2"
+        }
+      ],
+      "title": "Veces por debajo del límite inf.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "humidity"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_HUM_1 value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MIN_HUM_2 value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 2"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 15,
+        "y": 42
+      },
+      "id": 52,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum1"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"min_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MIN_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum2"
+        }
+      ],
+      "title": "Humedad mínma",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_HUM_1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 1"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "COUNT_MAX_HUM_2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 2"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 10,
+        "y": 47
+      },
+      "id": 96,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum1"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"counts\"] == \"counts_max\")\n  |> filter(fn: (r) => r[\"_field\"] == \"COUNT_MAX_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum2"
+        }
+      ],
+      "title": "Veces por encima del límite sup.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "humidity"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_HUM_1 value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAX_HUM_2 value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humedad 2"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 15,
+        "y": 47
+      },
+      "id": 53,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_HUM_1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum1"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"max_values\"] == \"value\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MAX_HUM_2\")\n  |> last()\n  |> yield(name: \"last\")",
+          "refId": "Hum2"
+        }
+      ],
+      "title": "Humedad máxima",
+      "type": "gauge"
     }
   ],
   "refresh": "5s",
@@ -2248,7 +2241,7 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},

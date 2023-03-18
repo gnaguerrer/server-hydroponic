@@ -70,10 +70,31 @@ services:
     build:
       context: .
       dockerfile: analytics/Dockerfile
+    env_file:
+      - analytics/setup.env
     depends_on:
       - database
       - broker
       - telegraf
+
+  api:
+    container_name: api
+    image: api-image
+    restart: always
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+      - broker
+      - telegraf
+      - analytics
+    networks:
+      default:
+        aliases:
+          - api
 
 networks:
   default:
