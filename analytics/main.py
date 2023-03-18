@@ -197,22 +197,25 @@ class Analytics():
 
         print("Dataframe prediction ", self.dataframe_prediction, flush=True)
 
-    def get_prediction_next_day(self):
+    def get_prediction_next_day(self, actual_time):
         if len(self.dataframe_prediction) > 0:
             X = self.dataframe_prediction[const.DAY_OF_THE_YEAR_KEY].to_numpy(
             ).reshape(-1, 1)
             Y = self.dataframe_prediction[const.MEAN_TEMPERATURE_KEY].to_numpy(
             )
             self.random_forest_regressor.fit(X, Y)
-            last_date = self.dataframe_prediction.iloc[-1][const.DATE_DAY_KEY] + timedelta(
+            timezone = pytz.timezone(const.TIME_ZONE)
+            actual_time = float(actual_time)/1000000000
+            next_day = datetime.fromtimestamp(actual_time, timezone).date() + timedelta(
                 days=1)
-            value_to_predict = np.array(int(last_date.strftime('%j')))
+            value_to_predict = np.array(
+                int(next_day.strftime('%j'))).reshape(-1, 1)
             value_predicted = self.random_forest_regressor.predict(
-                value_to_predict.reshape(-1, 1))
+                value_to_predict)
             print("Predicted temperature for {} is {} ".format(
-                last_date, value_predicted), flush=True)
+                next_day, value_predicted[0]), flush=True)
             self.write_db(
-                tag='prediction',
+                tag='predictions',
                 tag_value='next_day',
                 key='MEAN_{}'.format(const.TEMPERATURE_ATM_KEY),
                 value=value_predicted[0],
@@ -222,9 +225,9 @@ class Analytics():
             print(
                 "No se puede realizar una prediccion en get_prediction_next_day()", flush=True)
 
-    def get_prediction_seconds(self):
+    def get_prediction_seconds(self, actual_time):
         if len(self.dataframe_prediction) > 0:
-            timezone = pytz.timezone("America/Bogota")
+            timezone = pytz.timezone(const.TIME_ZONE)
             max_seconds = 86400
             forward_seconds = 10
             dataframe = self.dataframe.copy()
@@ -233,23 +236,20 @@ class Analytics():
             regressor = AdaBoostRegressor(
                 DecisionTreeRegressor(max_depth=5), n_estimators=10)
             regressor.fit(X, Y)
-            value_to_predict = dataframe[const.SECONDS_KEY].iloc[-1] + \
-                forward_seconds
+            actual_time = float(actual_time)/1000000000
+            value_to_predict = actual_time + forward_seconds
             if value_to_predict > max_seconds:
                 value_to_predict = np.array(value_to_predict - max_seconds)
             else:
                 value_to_predict = np.array(value_to_predict)
             value_predicted = regressor.predict(
                 value_to_predict.reshape(-1, 1))
-            last_timestamp = dataframe[const.DATE_KEY].iloc[-1]
-            last_timestamp = float(last_timestamp)/1000000000
-            last_date = last_timestamp + forward_seconds
-            last_date = datetime.fromtimestamp(
-                float(last_date), timezone).strftime("%Y-%m-%dT%H:%M:%S")
+            prediction_time = datetime.fromtimestamp(
+                float(actual_time), timezone).strftime("%Y-%m-%dT%H:%M:%S")
             print("Predicted temperature for {} is {} ".format(
-                last_date, value_predicted), flush=True)
+                prediction_time, value_predicted[0]), flush=True)
             self.write_db(
-                tag='prediction',
+                tag='predictions',
                 tag_value='few_seconds',
                 key='VALUE_OF_{}'.format(const.TEMPERATURE_ATM_KEY),
                 value=value_predicted[0],
@@ -287,7 +287,7 @@ class Analytics():
         # print(timestamp, flush=True)
         measurements_string = payload.split(",")
 
-        timezone = pytz.timezone("America/Bogota")
+        timezone = pytz.timezone(const.TIME_ZONE)
         timestamp_in_sec = float(timestamp)/1000000000
         incoming_datetime_str = datetime.fromtimestamp(
             float(timestamp_in_sec), timezone).strftime("%Y-%m-%dT%H:%M:%S")
@@ -328,10 +328,10 @@ class Analytics():
         self.dataframe = self.dataframe.append(
             new_measurement, ignore_index=True)
         print("Normal Dataframe ", self.dataframe, flush=True)
+        self.add_to_dataframe_prediction()
         self.get_counts_alert(new_measurement)
         self.get_max_values()
         self.get_min_values()
-        self.add_to_dataframe_prediction()
         self.get_counts_dataframe()
 
     def get_prediction(self, _message):
@@ -355,7 +355,9 @@ if __name__ == '__main__':
         if current_topic == 'data':
             analytics.take_measurement(message)
         elif current_topic == 'prediction':
-            analytics.get_prediction(message)
+            timestamp = message.split(" ")[2]
+            analytics.get_prediction_next_day(timestamp)
+            analytics.get_prediction_seconds(timestamp)
         elif current_topic == 'alert':
             analytics.toggle_alerts(message)
 
