@@ -314,19 +314,21 @@ class Analytics():
             #print(measurement_key_value, flush=True)
             measurements[measurement_key_value[0]] = float(
                 measurement_key_value[1])
-        new_measurement = {
-            const.DATE_KEY: float(timestamp),
-            const.SECONDS_KEY: int(time_second),
-            const.TEMPERATURE_TANK_KEY: measurements[const.Temperatura_Tanque_de_reserva],
-            const.TEMPERATURE_MAIN_TANK_KEY: measurements[const.Temperatura_Tanque_Principal],
-            const.TEMPERATURE_DOME_KEY: measurements[const.Temperatura_Domo],
-            const.TEMPERATURE_PLANTS_KEY: measurements[const.Temperatura_Plantas],
-            const.TEMPERATURE_ATM_KEY: measurements[const.Temperatura_medio_ambiente],
-            const.HUMEDITY_1_KEY: measurements[const.Humedad_Planta_1],
-            const.HUMEDITY_2_KEY: measurements[const.Humedad_Planta_2],
-        }
-        self.dataframe = self.dataframe.append(
-            new_measurement, ignore_index=True)
+        new_measurement = [
+            float(timestamp),
+            int(time_second),
+            measurements[const.Temperatura_Tanque_de_reserva],
+            measurements[const.Temperatura_Tanque_Principal],
+            measurements[const.Temperatura_Domo],
+            measurements[const.Temperatura_Plantas],
+            measurements[const.Temperatura_medio_ambiente],
+            measurements[const.Humedad_Planta_1],
+            measurements[const.Humedad_Planta_2]
+        ]
+        data_to_append = pd.DataFrame(
+            [new_measurement], columns=self.dataframe.columns)
+        self.dataframe = pd.concat(
+            [self.dataframe, data_to_append], ignore_index=True)
         print("Normal Dataframe ", self.dataframe, flush=True)
         self.add_to_dataframe_prediction()
         self.get_counts_alert(new_measurement)
