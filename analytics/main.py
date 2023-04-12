@@ -265,7 +265,7 @@ class Analytics():
                 self.counts[key] = 0
                 if int(self.alert):
                     print('Sending messages', flush=True)
-                    # alert_sms.send_alert_sms(const.ALERT_MESSAGES[key])
+                    alert_sms.send_alert_sms(const.ALERT_MESSAGES[key])
         print(self.counts, flush=True)
 
     def get_counts_alert(self, current_measurements):

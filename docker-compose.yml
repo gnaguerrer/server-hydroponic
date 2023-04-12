@@ -45,6 +45,7 @@ services:
       - ./grafana/influx.yml:/etc/grafana/provisioning/datasources/influx.yml
       - ./grafana/grafana.yml:/etc/grafana/provisioning/dashboards/grafana.yml
       - ./grafana/:/var/lib/grafana/dashboards/
+      - ./grafana/config.ini:/usr/share/grafana/conf/defaults.ini
     depends_on:
       - database
     env_file:
