@@ -177,7 +177,7 @@ class Analytics():
         last_day_of_the_year = int((last_day).strftime('%j'))
 
         if len(self.dataframe_prediction) == 0:
-            data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_ATM_KEY].mean(
+            data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_DOME_KEY].mean(
             )]], columns=self.dataframe_prediction.columns)
             self.dataframe_prediction = pd.concat(
                 [self.dataframe_prediction, data_to_append], ignore_index=True)
@@ -185,12 +185,12 @@ class Analytics():
             if last_day_of_the_year == self.dataframe_prediction.iloc[-1][const.DAY_OF_THE_YEAR_KEY]:
                 self.dataframe_prediction = self.dataframe_prediction.drop(
                     len(self.dataframe_prediction) - 1)
-                data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_ATM_KEY].mean(
+                data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_DOME_KEY].mean(
                 )]], columns=self.dataframe_prediction.columns)
                 self.dataframe_prediction = pd.concat(
                     [self.dataframe_prediction, data_to_append], ignore_index=True)
             else:
-                data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_ATM_KEY].mean(
+                data_to_append = pd.DataFrame([[last_day, last_day_of_the_year, self.dataframe[const.TEMPERATURE_DOME_KEY].mean(
                 )]], columns=self.dataframe_prediction.columns)
                 self.dataframe_prediction = pd.concat(
                     [self.dataframe_prediction, data_to_append], ignore_index=True)
@@ -217,7 +217,7 @@ class Analytics():
             self.write_db(
                 tag='predictions',
                 tag_value='next_day',
-                key='MEAN_{}'.format(const.TEMPERATURE_ATM_KEY),
+                key='MEAN_{}'.format(const.TEMPERATURE_DOME_KEY),
                 value=value_predicted[0],
                 timestamp=time.time_ns()
             )
@@ -232,7 +232,7 @@ class Analytics():
             forward_seconds = 10
             dataframe = self.dataframe.copy()
             X = dataframe[const.SECONDS_KEY].to_numpy().reshape(-1, 1)
-            Y = dataframe[const.TEMPERATURE_ATM_KEY].to_numpy()
+            Y = dataframe[const.TEMPERATURE_DOME_KEY].to_numpy()
             regressor = AdaBoostRegressor(
                 DecisionTreeRegressor(max_depth=5), n_estimators=10)
             regressor.fit(X, Y)
@@ -251,7 +251,7 @@ class Analytics():
             self.write_db(
                 tag='predictions',
                 tag_value='few_seconds',
-                key='VALUE_OF_{}'.format(const.TEMPERATURE_ATM_KEY),
+                key='VALUE_OF_{}'.format(const.TEMPERATURE_DOME_KEY),
                 value=value_predicted[0],
                 timestamp=time.time_ns()
             )

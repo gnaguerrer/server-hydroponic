@@ -95,12 +95,12 @@ TIME_ZONE = "America/Bogota"
 
 
 ALERT_MESSAGES = {
-    'COUNT_MIN_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'The minium temperature of main tank has been reached three times.',
-    'COUNT_MIN_{}'.format(TEMPERATURE_TANK_KEY): 'The minium temperature of backup tank has been reached three times.',
-    'COUNT_MIN_{}'.format(HUMEDITY_1_KEY): 'The minium temperature of humedty 1 has been reached three times.',
-    'COUNT_MIN_{}'.format(HUMEDITY_2_KEY): 'The minium temperature of humedty 2 has been reached three times.',
-    'COUNT_MAX_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'The maximun temperature of main tank has been reached three times.',
-    'COUNT_MAX_{}'.format(TEMPERATURE_TANK_KEY): 'The maximun temperature of backup tank has been reached three times.',
-    'COUNT_MAX_{}'.format(HUMEDITY_1_KEY): 'The maximun temperature of humedty 1 has been reached three times.',
-    'COUNT_MAX_{}'.format(HUMEDITY_2_KEY): 'The maximun temperature of humedty 2 has been reached three times.',
+    'COUNT_MIN_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'La temperatura del tanque principal ha excedido la temperatura mínima mas de tres veces.',
+    'COUNT_MIN_{}'.format(TEMPERATURE_TANK_KEY): 'La temperatura del tanque de reserva ha excedido la temperatura mínima mas de tres veces.',
+    'COUNT_MIN_{}'.format(HUMEDITY_1_KEY): 'La humedad 1 ha excedido la humedad mínima mas de tres veces.',
+    'COUNT_MIN_{}'.format(HUMEDITY_2_KEY): 'La humedad 2 ha excedido la humedad mínima mas de tres veces.',
+    'COUNT_MAX_{}'.format(TEMPERATURE_MAIN_TANK_KEY): 'La temperatura del tanque principal ha excedido la temperatura máxima  mas de tres veces.',
+    'COUNT_MAX_{}'.format(TEMPERATURE_TANK_KEY): 'La temperatura del tanque de reserva ha excedido la temperatura máxima mas de tres veces.',
+    'COUNT_MAX_{}'.format(HUMEDITY_1_KEY): 'La humedad 1 ha excedido la humedad máxima mas de tres veces.',
+    'COUNT_MAX_{}'.format(HUMEDITY_2_KEY): 'La humedad 2 ha excedido la humedad máxima mas de tres veces.',
 }
