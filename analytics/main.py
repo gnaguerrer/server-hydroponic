@@ -195,7 +195,7 @@ class Analytics():
                 self.dataframe_prediction = pd.concat(
                     [self.dataframe_prediction, data_to_append], ignore_index=True)
 
-        # print("Dataframe prediction ", self.dataframe_prediction, flush=True)
+        print("Dataframe prediction ", self.dataframe_prediction, flush=True)
 
     def get_prediction_next_day(self, actual_time):
         if len(self.dataframe_prediction) > 0:
@@ -340,7 +340,7 @@ class Analytics():
             [new_measurement], columns=self.dataframe.columns)
         self.dataframe = pd.concat(
             [self.dataframe, data_to_append], ignore_index=True)
-        # print("Normal Dataframe ", self.dataframe, flush=True)
+        print("Normal Dataframe ", self.dataframe, flush=True)
         self.add_to_dataframe_prediction()
         self.get_counts_alert(new_measurement_dict)
         self.get_max_values()
@@ -368,6 +368,7 @@ if __name__ == '__main__':
         if current_topic == 'data':
             analytics.take_measurement(message)
         elif current_topic == 'prediction':
+            print('--------------->Prediction', flush=True)
             timestamp = message.split(" ")[2]
             analytics.get_prediction_next_day(timestamp)
             analytics.get_prediction_seconds(timestamp)

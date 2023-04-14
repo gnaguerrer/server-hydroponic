@@ -14,6 +14,8 @@ origins = [
     "http://localhost",
     "http://localhost:3000",
     "http://localhost:3001",
+    "http://20.246.97.221",
+    "http://20.246.97.221:3000"
 ]
 
 app = FastAPI(title="TestApi")

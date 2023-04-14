@@ -21,9 +21,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 2,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -253,7 +254,7 @@
         "orientation": "center",
         "text": "Habilitar/Deshabilitar alertas",
         "type": "header",
-        "url": "http://localhost:8000/toogle_alerts",
+        "url": "http://20.246.97.221:8000/toogle_alerts",
         "variant": "destructive"
       },
       "targets": [
@@ -355,7 +356,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "VALUE_OF_TEMP_ATM few_seconds"
+              "options": "VALUE_OF_TEMP_DOME few_seconds"
             },
             "properties": [
               {
@@ -412,7 +413,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "MEAN_TEMP_ATM next_day"
+              "options": "MEAN_TEMP_DOME next_day"
             },
             "properties": [
               {
@@ -493,7 +494,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"predictions\"] == \"few_seconds\")\n  |> filter(fn: (r) => r[\"_field\"] == \"VALUE_OF_TEMP_ATM\")\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"predictions\"] == \"few_seconds\")\n  |> filter(fn: (r) => r[\"_field\"] == \"VALUE_OF_TEMP_DOME\")\n  |> yield(name: \"last\")",
           "refId": "Seconds"
         },
         {
@@ -501,7 +502,7 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"predictions\"] == \"next_day\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MEAN_TEMP_ATM\")\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"predictions\"] == \"next_day\")\n  |> filter(fn: (r) => r[\"_field\"] == \"MEAN_TEMP_DOME\")\n  |> yield(name: \"last\")",
           "refId": "Next_day"
         }
       ],
@@ -529,7 +530,7 @@
         "orientation": "center",
         "text": "Predecir temperatura promedio",
         "type": "header",
-        "url": "http://localhost:8000/get_prediction",
+        "url": "http://20.246.97.221:8000/get_prediction",
         "variant": "primary"
       },
       "targets": [
@@ -1170,8 +1171,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1241,8 +1241,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "blue",
@@ -1343,8 +1342,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1452,8 +1450,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1609,8 +1606,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-yellow",
-                "value": null
+                "color": "super-light-yellow"
               }
             ]
           },
@@ -1699,8 +1695,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1802,8 +1797,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1948,8 +1942,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2053,8 +2046,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2163,8 +2155,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2252,8 +2243,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2362,8 +2352,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
