@@ -36,11 +36,11 @@ def get_hour_int(timestamp) -> int:
 
 def get_count_dome_day_max(item, max_value, time_min, time_max) -> bool:
     time_int=get_hour_int(item[const.DATE_KEY])
-    return bool(item[const.TEMPERATURE_DOME_KEY] > max_value and (time_int > time_min or time_int < time_max))
+    return bool(item[const.TEMPERATURE_DOME_KEY] > max_value and (time_int > time_min and time_int < time_max))
 
 def get_count_dome_day_min(item, min_value, time_min, time_max) -> bool:
     time_int=get_hour_int(item[const.DATE_KEY])
-    return bool(item[const.TEMPERATURE_DOME_KEY] <= min_value and (time_int > time_min or time_int < time_max))
+    return bool(item[const.TEMPERATURE_DOME_KEY] <= min_value and (time_int > time_min and time_int < time_max))
 
 def get_count_dome_night_max(item, max_value, time_min, time_max) -> bool:
     time_int=get_hour_int(item[const.DATE_KEY])

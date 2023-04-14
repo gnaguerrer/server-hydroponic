@@ -129,7 +129,7 @@ class Analytics():
                         timestamp=utils.get_time_to_influx()
                     )
                     # Count max from day
-                    dataframe_day_max = self.dataframe.apply(lambda x: utils.get_count_dome_day_min(
+                    dataframe_day_max = self.dataframe.apply(lambda x: utils.get_count_dome_day_max(
                         x, value['max'], const.DOME_DAY_HOURS['min'], const.DOME_DAY_HOURS['max']), axis=1)
                     count_day_max = len(
                         dataframe_day_max[dataframe_day_max == True].index)
@@ -195,7 +195,7 @@ class Analytics():
                 self.dataframe_prediction = pd.concat(
                     [self.dataframe_prediction, data_to_append], ignore_index=True)
 
-        print("Dataframe prediction ", self.dataframe_prediction, flush=True)
+        # print("Dataframe prediction ", self.dataframe_prediction, flush=True)
 
     def get_prediction_next_day(self, actual_time):
         if len(self.dataframe_prediction) > 0:
@@ -212,8 +212,8 @@ class Analytics():
                 int(next_day.strftime('%j'))).reshape(-1, 1)
             value_predicted = self.random_forest_regressor.predict(
                 value_to_predict)
-            print("Predicted temperature for {} is {} ".format(
-                next_day, value_predicted[0]), flush=True)
+            # print("Predicted temperature for {} is {} ".format(
+            #     next_day, value_predicted[0]), flush=True)
             self.write_db(
                 tag='predictions',
                 tag_value='next_day',
@@ -246,8 +246,8 @@ class Analytics():
                 value_to_predict.reshape(-1, 1))
             prediction_time = datetime.fromtimestamp(
                 float(actual_time), timezone).strftime("%Y-%m-%dT%H:%M:%S")
-            print("Predicted temperature for {} is {} ".format(
-                prediction_time, value_predicted[0]), flush=True)
+            # print("Predicted temperature for {} is {} ".format(
+            #     prediction_time, value_predicted[0]), flush=True)
             self.write_db(
                 tag='predictions',
                 tag_value='few_seconds',
@@ -270,7 +270,7 @@ class Analytics():
 
     def get_counts_alert(self, current_measurements):
         for key, value in const.VARS_COUNT.items():
-            print('---> key: {}, value: {}'.format(key, value), flush=True)
+            # print('---> key: {}, value: {}'.format(key, value), flush=True)
             if current_measurements[key] > value['max']:
                 self.counts['COUNT_MAX_{}'.format(key)] += 1
             if current_measurements[key] <= value['min']:
@@ -340,7 +340,7 @@ class Analytics():
             [new_measurement], columns=self.dataframe.columns)
         self.dataframe = pd.concat(
             [self.dataframe, data_to_append], ignore_index=True)
-        print("Normal Dataframe ", self.dataframe, flush=True)
+        # print("Normal Dataframe ", self.dataframe, flush=True)
         self.add_to_dataframe_prediction()
         self.get_counts_alert(new_measurement_dict)
         self.get_max_values()
