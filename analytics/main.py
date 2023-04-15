@@ -279,11 +279,12 @@ class Analytics():
 
     def take_measurement(self, _message):
         measurements = {}
+        splitted_message = _message.split(" ")
         # Payload
-        payload = _message.split(" ")[1]
+        payload = splitted_message[1]
         #print(payload, flush=True)
         # Datetime in ns
-        timestamp = _message.split(" ")[2]
+        timestamp = splitted_message[2] if len(splitted_message) > 2 else time.time_ns()
         # print(timestamp, flush=True)
         measurements_string = payload.split(",")
 
