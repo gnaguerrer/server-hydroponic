@@ -25,32 +25,32 @@ Humedad_Planta_2 = 'Humedad_Planta_2'
 # Thresholds for selected vars
 THRESHOLD_TEMPERATURE_BACKUP_TANK = {
     'min': 18,
-    'max': 27,
+    'max': 30,
 }
 
 THRESHOLD_TEMPERATURE_MAIN_TANK = {
     'min': 18,
-    'max': 27,
+    'max': 30,
 }
 
 THRESHOLD_HUMIDITY_1 = {
     'min': 50,
-    'max': 70,
+    'max': 80,
 }
 
 THRESHOLD_HUMIDITY_2 = {
     'min': 50,
-    'max': 70,
+    'max': 80,
 }
 
 THRESHOLD_TEMPERATURE_DOME_DAY = {
     'min': 20,
-    'max': 25,
+    'max': 30,
 }
 
 THRESHOLD_TEMPERATURE_DOME_NIGHT = {
     'min': 15,
-    'max': 20,
+    'max': 28,
 }
 
 
